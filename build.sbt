@@ -9,9 +9,9 @@ lazy val root = (project in file("."))
   .settings(
     name := "peeriq",
     libraryDependencies += scalaTest % Test,
-    libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.5",
-    libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.5",
-    libraryDependencies += "org.apache.hadoop" % "hadoop-aws" % "2.7.2",
+    libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.5" % Provided,
+    libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.5"  % Provided,
+    libraryDependencies += "org.apache.hadoop" % "hadoop-aws" % "2.7.2" % Provided,
     libraryDependencies += "org.postgresql" % "postgresql" % "42.2.12"
   )
 test in assembly := {}
