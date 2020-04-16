@@ -35,7 +35,7 @@ object LoadLoans {
     val properties = new Properties()
     properties.setProperty("user", "dbuser")
     properties.setProperty("password", "password")
-    properties.setProperty("driver", "org.postgresql.Driver")
+    properties.setProperty("driver", "org.postgresql.Driver")  //<------VERY IMPORTANT!
     val url = "jdbc:postgresql://fijimf.com:5432/dbuser"
     val table = "data_test"
 
