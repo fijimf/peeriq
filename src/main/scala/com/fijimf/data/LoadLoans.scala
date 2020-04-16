@@ -22,8 +22,8 @@ object LoadLoans {
     val bucket:String=args(0)
     val file:String=args(1)
     val df: DataFrame = process(readDataFrame(session, bucket, file))
-    //    println(df.count())
-    //    df.show(20)
+        println(df.count())
+        df.show(20)
     writeDataFrame(df)
     session.stop()
   }

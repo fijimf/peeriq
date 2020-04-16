@@ -18,5 +18,14 @@ Finally we run the `main` method in `com.fijimf.ClusterManager`.  This spins up 
 
 ### LoadLoans
 
+LoadLoans is a straightforward Spark application.  It reads a CSV file from an S3 bucket into a dataframe.  The file name and bucket are passed as parameters to the main method.
+
+The `process` function transforms the dataframe in accordance with the requirements.  The process method here is very simple and straightforward.  In a production system, there would be substantially more data quality checks and those checks, the data transformations, and aggregations would probably be grouped together thematically into functions, or traits which might be shared among applications.
+
+Finally the transformed dataframe is written to a Postgres database.  In this case I have chosen to write to the database in 'overwrite'  That is not the only way one could go, but I have found in practice that 'overwrite' often works more smoothly than 'append'.  
+The database write is an all or nothing thing, and any constraints you might have that would cause an insert to fail, will fail the whole write task.  Postgres has a first class UPSERT, and so I've found it useful to consider the table written by Spark as a staging table for the final table for the data, and to handle that last step on the database.
+
+  
 ### ClusterManager
- 
+
+ClusterManager 
