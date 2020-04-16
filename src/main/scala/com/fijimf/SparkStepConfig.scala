@@ -1,11 +1,11 @@
-package com.fijimf.data
+package com.fijimf
 
 import com.amazonaws.services.elasticmapreduce.model.{HadoopJarStepConfig, StepConfig}
 
 object SparkStepConfig {
   val assemblyJar = "s3://fijimf-loans/peeriq.jar"
 
-  def createStepConfig(name: String, fqn: String, extraOptions: Map[String, String]): StepConfig = {
+  def createStepConfig(name: String, fqn: String, extraOptions: Map[String, String], cmdLineArgs: Array[String]): StepConfig = {
     new StepConfig()
       .withName(name)
       .withActionOnFailure("TERMINATE_JOB_FLOW")
@@ -13,14 +13,14 @@ object SparkStepConfig {
         new HadoopJarStepConfig()
           .withJar("command-runner.jar")
           .withArgs(
-            createArgs(name, fqn, extraOptions): _*
+            createArgs(name, fqn, extraOptions, cmdLineArgs): _*
           )
       )
   }
 
-  def createArgs(name: String, fqn: String, extraOptions: Map[String, String]): Array[String] = {
+  def createArgs(name: String, fqn: String, extraOptions: Map[String, String], cmdLineArgs: Array[String]): Array[String] = {
     val dOptions = extraOptions.map { case (k: String, v: String) => s"-D$k=$v" }.mkString(" ")
-    if (extraOptions.isEmpty)
+    (if (extraOptions.isEmpty)
       Array(
         "spark-submit",
         "--class", fqn,
@@ -28,7 +28,7 @@ object SparkStepConfig {
         "--deploy-mode", "client",
         "--executor-memory", "5g",
         "--num-executors", "10",
-        "--jars","s3://fijimf-loans/postgresql-42.2.10.jar",
+        "--jars", "s3://fijimf-loans/postgresql-42.2.10.jar",
         assemblyJar
       )
     else
@@ -41,9 +41,9 @@ object SparkStepConfig {
         "--deploy-mode", "client",
         "--executor-memory", "5g",
         "--num-executors", "10",
-        "--jars","s3://fijimf-loans/postgresql-42.2.10.jar",
+        "--jars", "s3://fijimf-loans/postgresql-42.2.10.jar",
         assemblyJar
-      )
+      )) ++ cmdLineArgs
 
   }
 
