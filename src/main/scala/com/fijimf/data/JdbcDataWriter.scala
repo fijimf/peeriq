@@ -1,4 +1,4 @@
-package example.com.fijimf.data
+package com.fijimf.data
 
 import java.util.Properties
 
